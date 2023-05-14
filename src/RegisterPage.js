@@ -11,7 +11,7 @@ function RegisterPage() {
                 <img src={logo} alt="Logo" />
                 <RegisterForm />
                 <p>
-                    Already have an account? <Link to="/">Log in</Link>
+                    Already have an account? <Link to="/login">Log in</Link>
                 </p>
             </form>
         </div>

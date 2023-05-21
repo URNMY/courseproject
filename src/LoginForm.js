@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // handle login logic
+      navigate('/recipes');
   };
 
   return (
@@ -21,7 +24,7 @@ function LoginForm() {
         required
       />
 
-      <label htmlFor="password">Password</label>
+      <label htmlFor="password">Пароль</label>
       <input
         type="password"
         id="password"
@@ -32,7 +35,7 @@ function LoginForm() {
       />
 
       <button type="submit" onClick={handleSubmit}>
-        Log in
+          Войти
       </button>
     </div>
   );

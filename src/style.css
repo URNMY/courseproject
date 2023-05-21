@@ -27,7 +27,10 @@ form label {
 }
 
 form input[type="email"],
-form input[type="password"] {
+form input[type="password"],
+form input[type="repassword"],
+form input[type="username"],
+form input[type="repassword"]{
     display: block;
     width: 100%;
     padding: 10px;
@@ -38,7 +41,7 @@ form input[type="password"] {
 }
 
 form button[type="submit"] {
-    background-color: #007bff;
+    background-color: #E67300;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -49,5 +52,13 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-    background-color: #0069d9;
+    background-color: #B45C00;
+}
+
+.link:visited {
+    color: #E67300;
+}
+
+.Message {
+    color: #EE4B2B
 }

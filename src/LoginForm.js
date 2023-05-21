@@ -6,7 +6,6 @@ function LoginForm() {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        try {
             const response = await fetch('http://localhost:8000/login', {
                 method: 'POST',
                 headers: {
@@ -18,16 +17,14 @@ function LoginForm() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
-                window.location.href = '\'http://localhost:8000/recipes';
-                console.log('Success!');
+
                 // Дополнительные действия после успешной авторизации
+                window.location.href = 'http://localhost:3000/recipes';
             } else {
                 const errorData = await response.json();
                 console.log('Ошибка авторизации:', errorData.detail);
             }
-        } catch (error) {
-            console.log('Произошла ошибка', error);
-        }
+
     };
 
 

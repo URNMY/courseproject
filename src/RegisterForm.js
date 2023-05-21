@@ -33,7 +33,7 @@ function RegisterForm() {
                 if (response.ok) {
                     const data = await response.json();
                     setMessage(data.message);
-                    window.location.href = 'http://localhost:8000/recipes';
+                    window.location.href = 'http://localhost:3000/recipes';
                     // Дополнительные действия после успешной регистрации
                 } else {
                     setMessage('Произошла ошибка');

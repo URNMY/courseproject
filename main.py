@@ -60,12 +60,10 @@ async def login_user(user: UserLogin):
             password=user.password
         )
         count = result.single()["count"]
-        if count == 1:
-            # Если авторизация успешна, перенаправляем пользователя на страницу /recipes
-            return RedirectResponse("/recipes")
-        else:
+        if count != 1:
             # Если авторизация неуспешна, возбуждаем исключение HTTPException
             raise HTTPException(status_code=401, detail="Неверные имя пользователя или пароль")
+    return {"message": "Пользователь успешно вошел"}
 
 # Другие маршруты и функции обработчиков запросов...
 

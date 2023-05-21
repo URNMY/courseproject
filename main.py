@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from neo4j import GraphDatabase, basic_auth
+from fastapi.responses import RedirectResponse
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -23,6 +25,7 @@ uri = "bolt://localhost:7687"
 auth = basic_auth("neo4j", "coursework")
 driver = GraphDatabase.driver(uri, auth=auth)
 
+
 # Маршрут для регистрации пользователя
 @app.post("/register")
 async def register_user(user: UserRegistration):
@@ -35,6 +38,7 @@ async def register_user(user: UserRegistration):
         )
     return {"message": "Пользователь зарегистрирован"}
 
+
 # Маршрут для авторизации пользователя
 @app.post("/login")
 async def login_user(user: UserLogin):
@@ -46,8 +50,10 @@ async def login_user(user: UserLogin):
         )
         count = result.single()["count"]
         if count == 1:
-            return {"message": "Успешная авторизация"}
+            # Если авторизация успешна, перенаправляем пользователя на страницу /recipes
+            return RedirectResponse("/recipes")
         else:
-            return {"message": "Неверные имя пользователя или пароль"}
+            # Если авторизация неуспешна, возбуждаем исключение HTTPException
+            raise HTTPException(status_code=401, detail="Неверные имя пользователя или пароль")
 
 # Другие маршруты и функции обработчиков запросов...

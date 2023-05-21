@@ -16,6 +16,28 @@ function RegisterForm() {
         setMessage("");
     };
 
+    const handleRegistration = async () => {
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, email, password }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setMessage(data.message);
+                // Дополнительные действия после успешной регистрации
+            } else {
+                setMessage('Произошла ошибка');
+            }
+        } catch (error) {
+           setMessage('Произошла ошибка');
+        }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         // handle registration logic
@@ -67,7 +89,7 @@ function RegisterForm() {
             />
 
             {message && <p className="Message">{message}</p>}
-            <button type="submit" onClick={handleSubmit}>
+            <button type="submit" onClick={handleRegistration}>
                 Зарегистрироваться
             </button>
 

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
@@ -12,15 +12,39 @@ function LoginForm() {
       navigate('/recipes');
   };
 
+    const handleLogin = async () => {
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                navigate('/recipes');
+                // Дополнительные действия после успешной авторизации
+            } else {
+                console.log('Произошла ошибка');
+            }
+        } catch (error) {
+            console.log('Произошла ошибка', error);
+        }
+    };
+
+
   return (
     <div>
-      <label htmlFor="email">Email</label>
+      <label htmlFor="username">Имя пользователя</label>
       <input
-        type="email"
-        id="email"
-        name="email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        type="username"
+        id="username"
+        name="username"
+        value={username}
+        onChange={(event) => setUsername(event.target.value)}
         required
       />
 
@@ -34,7 +58,7 @@ function LoginForm() {
         required
       />
 
-      <button type="submit" onClick={handleSubmit}>
+      <button type="submit" onClick={handleLogin}>
           Войти
       </button>
     </div>

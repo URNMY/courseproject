@@ -27,6 +27,7 @@ form label {
 }
 
 form input[type="email"],
+form input[type="text"],
 form input[type="password"],
 form input[type="repassword"],
 form input[type="username"],

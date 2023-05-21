@@ -16,33 +16,28 @@ function RegisterForm() {
         setMessage("");
     };
 
-    const handleRegistration = async () => {
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, email, password }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setMessage(data.message);
-                // Дополнительные действия после успешной регистрации
-            } else {
-                setMessage('Произошла ошибка');
-            }
-        } catch (error) {
-           setMessage('Произошла ошибка');
-        }
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // handle registration logic
+    const handleRegistration = async (event) => {
         if (password !== repassword) {
             setMessage("Пароли не совпадают");
+        }
+        else {
+            event.preventDefault();
+                const response = await fetch('http://localhost:8000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({username, email, password}),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setMessage(data.message);
+                    window.location.href = 'http://localhost:3000/recipes';
+                    // Дополнительные действия после успешной регистрации
+                } else {
+                    setMessage('Произошла ошибка');
+                }
         }
     };
 
@@ -51,7 +46,7 @@ function RegisterForm() {
 
             <label htmlFor="username">Имя пользователя</label>
             <input
-                type="username"
+                type="text"
                 id="username"
                 name="username"
                 value={username}

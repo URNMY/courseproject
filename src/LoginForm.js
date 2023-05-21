@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
-import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // handle login logic
-      navigate('/recipes');
-  };
-
-    const handleLogin = async () => {
-        try {
-            const response = await fetch('/login', {
+    const handleLogin = async (event) => {
+        event.preventDefault();
+            const response = await fetch('http://localhost:8000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,14 +17,14 @@ function LoginForm() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
-                navigate('/recipes');
+
                 // Дополнительные действия после успешной авторизации
+                window.location.href = 'http://localhost:3000/recipes';
             } else {
-                console.log('Произошла ошибка');
+                const errorData = await response.json();
+                console.log('Ошибка авторизации:', errorData.detail);
             }
-        } catch (error) {
-            console.log('Произошла ошибка', error);
-        }
+
     };
 
 
@@ -40,7 +32,7 @@ function LoginForm() {
     <div>
       <label htmlFor="username">Имя пользователя</label>
       <input
-        type="username"
+        type="text"
         id="username"
         name="username"
         value={username}

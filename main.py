@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from neo4j import GraphDatabase, basic_auth
-from fastapi.responses import RedirectResponse
 from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -43,7 +42,9 @@ async def register_user(user: UserRegistration):
 
         # Создание нового пользователя
         query = """
-        CREATE (u:User {username: $username, email: $email, password: $password})
+        CREATE (u:User {username: $username})
+        CREATE (u)-[:HAS_EMAIL]->(:Email {email: $email})
+        CREATE (u)-[:HAS_PASSWORD]->(:Password {password: $password})
         """
         session.run(query, username=user.username, email=user.email, password=user.password)
 
@@ -55,7 +56,7 @@ async def register_user(user: UserRegistration):
 async def login_user(user: UserLogin):
     with driver.session() as session:
         result = session.run(
-            "MATCH (u:User {username: $username, password: $password}) RETURN count(u) AS count",
+            "MATCH(u:User {username: $username})-[: HAS_PASSWORD]->(password:Password {password: $password}) RETURN count(u) AS count",
             username=user.username,
             password=user.password
         )

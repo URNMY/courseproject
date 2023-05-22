@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
 
 function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -11,7 +12,7 @@ function LoginForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({username, password}),
             });
 
             if (response.ok) {
@@ -24,7 +25,11 @@ function LoginForm() {
                 const errorData = await response.json();
                 console.log('Ошибка авторизации:', errorData.detail);
             }
+    };
 
+    const handleRecaptchaChange = (response) => {
+        // Обработка изменения reCAPTCHA
+        console.log("reCAPTCHA response:", response);
     };
 
 
@@ -50,9 +55,14 @@ function LoginForm() {
         required
       />
 
+      <ReCAPTCHA
+        sitekey="6LfkuSkmAAAAALQVRBN7023GvcZQJTKqhWrP5R0U"
+        onChange={handleRecaptchaChange}
+      />
       <button type="submit" onClick={handleLogin}>
           Войти
       </button>
+
     </div>
   );
 }
